@@ -4,6 +4,9 @@
   "main": "server.js",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "node-fetch": "^2.7.0",
     "razorpay": "^2.9.6"
   }
