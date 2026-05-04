@@ -1,0 +1,10 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^2.7.0",
+    "razorpay": "^2.9.6"
+  }
+}
