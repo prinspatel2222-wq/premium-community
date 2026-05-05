@@ -6,7 +6,7 @@ window.onload = function () {
   });
 };
 
-const BASE_URL = "http://localhost:3000"; // 👉 local test ke liye
+const BASE_URL = "https://premium-community.onrender.com"; 
 
 // 💰 Payment
 async function payNow() {
@@ -26,7 +26,7 @@ async function payNow() {
     let order = await res.json();
 
     var options = {
-      key: "rzp_test_Se7Mou7c24a1J0",
+      key: "rzp_test_SlXTJyhyCHv34f",
       amount: order.amount,
       currency: "INR",
       name: "Premium Community",
