@@ -79,7 +79,10 @@ Join WhatsApp:
 https://chat.whatsapp.com/EJoQhmKLCD2KwsefSsZQeA
 
 Join Telegram:
-https://t.me/+yOpxsenYUpw4NTA1`;
+https://t.me/+yOpxsenYUpw4NTA1 
+
+Note : Don’t panic. It may take some time for you to join.
+Even if you are unable to join using the link, we will add you from our side.`;
 
     window.location.href = `https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`;
 
