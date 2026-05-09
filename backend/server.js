@@ -3,7 +3,7 @@ app.post("/create-order", async (req, res) => {
   try {
 
     const order = await razorpay.orders.create({
-      amount: 10000, // ₹1199 = 119900 paise
+      amount: 100, // ₹1199 = 119900 paise
       currency: "INR",
       receipt: "bgpn_receipt"
     });
