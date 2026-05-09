@@ -32,7 +32,7 @@ app.post("/create-order", async (req, res) => {
   try {
 
     const order = await razorpay.orders.create({
-      amount: 119900, // ₹1199
+      amount: 1000, // ₹1199
       currency: "INR"
     });
 
