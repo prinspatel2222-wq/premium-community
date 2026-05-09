@@ -26,7 +26,7 @@ async function payNow() {
     let order = await res.json();
 
     var options = {
-      key: "rzp_test_SlXTJyhyCHv34f",
+      key: "rzp_live_SnKgp6HQ8AXsHZ",
       amount: order.amount,
       currency: "INR",
       name: "Premium Community",
