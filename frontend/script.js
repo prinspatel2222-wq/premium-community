@@ -16,8 +16,12 @@ async function payNow() {
   let business = document.getElementById("business").value;
 
   if (name === "") return alert("Enter name");
-  if (!/^[6-9]\d{9}$/.test(phone)) return alert("Enter valid number");
+
+  if (!/^[6-9]\d{9}$/.test(phone))
+    return alert("Enter valid number");
+
   if (email === "") return alert("Enter email");
+
   if (business === "Select Business Type")
     return alert("Select business");
 
@@ -31,6 +35,10 @@ async function payNow() {
 
     console.log("CREATE ORDER RESPONSE:", data);
 
+    if (!data.success) {
+      return alert("Order creation failed ❌");
+    }
+
     const order = data.order;
 
     var options = {
@@ -39,9 +47,11 @@ async function payNow() {
 
       amount: order.amount,
 
-      currency: "INR",
+      currency: order.currency,
 
       name: "Premium Community",
+
+      description: "BGPN Community Membership",
 
       order_id: order.id,
 
@@ -63,7 +73,7 @@ async function payNow() {
 
   } catch (err) {
 
-    console.log(err);
+    console.log("PAYMENT ERROR:", err);
 
     alert("Payment Error ❌");
 
@@ -96,6 +106,7 @@ async function verifyPayment(
           razorpay_payment_id: response.razorpay_payment_id,
           razorpay_signature: response.razorpay_signature
         })
+
       }
     );
 
@@ -147,9 +158,9 @@ Even if you are unable to join using the link, we will add you from our side.`;
 
   } catch (err) {
 
-    console.log(err);
+    console.log("VERIFY ERROR:", err);
 
-    alert("Error ❌");
+    alert("Verification Error ❌");
 
   }
 

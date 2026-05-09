@@ -32,6 +32,7 @@ app.get("/", (req, res) => {
 
 // 🔥 Create Order
 app.post("/create-order", async (req, res) => {
+
   try {
 
     const order = await razorpay.orders.create({
@@ -54,10 +55,11 @@ app.post("/create-order", async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Order Error",
-      error: err.message
+      error: err.error?.description || err.message
     });
 
   }
+
 });
 
 // 🔥 Verify Payment
@@ -117,10 +119,13 @@ app.post("/save-data", async (req, res) => {
       "https://script.google.com/macros/s/AKfycbyvKGvgL17s9LULg432BnJe0SF7jKNjl7cKwRcRWKDn1SJVtA8wNF4fsgBuXAjlKOya/exec",
       {
         method: "POST",
+
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(req.body),
+
+        body: JSON.stringify(req.body)
+
       }
     );
 
