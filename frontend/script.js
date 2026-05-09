@@ -43,7 +43,7 @@ async function payNow() {
 
     var options = {
 
-      key: "rzp_live_SnMGjLe3xeMxFj",
+      key: "rzp_live_SnMojIfDYVqcRD",
 
       amount: order.amount,
 
