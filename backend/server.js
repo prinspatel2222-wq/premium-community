@@ -14,9 +14,12 @@ app.use(express.json());
 
 // 🔍 DEBUG
 console.log("KEY ID:", process.env.RAZORPAY_KEY_ID);
+
 console.log(
   "KEY SECRET:",
-  process.env.RAZORPAY_KEY_SECRET ? "Loaded ✅" : "Missing ❌"
+  process.env.RAZORPAY_KEY_SECRET
+    ? "Loaded ✅"
+    : "Missing ❌"
 );
 
 // 🔥 Razorpay
@@ -67,32 +70,53 @@ app.post("/verify-payment", (req, res) => {
 
   try {
 
-    const {
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature
-    } = req.body;
+    console.log("VERIFY BODY:", req.body);
 
-    const body =
-      razorpay_order_id + "|" + razorpay_payment_id;
+    const razorpay_order_id =
+      req.body.razorpay_order_id;
 
-    const expectedSignature = crypto
-      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-      .update(body.toString())
+    const razorpay_payment_id =
+      req.body.razorpay_payment_id;
+
+    const razorpay_signature =
+      req.body.razorpay_signature;
+
+    const generated_signature = crypto
+      .createHmac(
+        "sha256",
+        process.env.RAZORPAY_KEY_SECRET
+      )
+      .update(
+        razorpay_order_id + "|" + razorpay_payment_id
+      )
       .digest("hex");
 
-    if (expectedSignature === razorpay_signature) {
+    console.log(
+      "GENERATED SIGNATURE:",
+      generated_signature
+    );
 
-      res.status(200).json({
+    console.log(
+      "RAZORPAY SIGNATURE:",
+      razorpay_signature
+    );
+
+    if (generated_signature === razorpay_signature) {
+
+      console.log("PAYMENT VERIFIED SUCCESS");
+
+      return res.status(200).json({
         success: true,
         message: "Payment Verified"
       });
 
     } else {
 
-      res.status(400).json({
+      console.log("SIGNATURE NOT MATCHED");
+
+      return res.status(400).json({
         success: false,
-        message: "Invalid Payment"
+        message: "Invalid Signature"
       });
 
     }
@@ -101,7 +125,7 @@ app.post("/verify-payment", (req, res) => {
 
     console.log("VERIFY ERROR:", err);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Verification Failed"
     });
@@ -114,6 +138,8 @@ app.post("/verify-payment", (req, res) => {
 app.post("/save-data", async (req, res) => {
 
   try {
+
+    console.log("SAVE DATA:", req.body);
 
     const response = await fetch(
       "https://script.google.com/macros/s/AKfycbyvKGvgL17s9LULg432BnJe0SF7jKNjl7cKwRcRWKDn1SJVtA8wNF4fsgBuXAjlKOya/exec",
@@ -155,5 +181,7 @@ app.post("/save-data", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log("Server running on port " + PORT);
+  console.log(
+    "Server running on port " + PORT
+  );
 });
