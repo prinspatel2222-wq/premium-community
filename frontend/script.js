@@ -68,28 +68,5 @@ function verifyPayment(response, name, phone, email, business) {
     alert("Payment Failed");
   });
 }
-//eding 
-const verify tokan ="this identify check authorized"
-console.log(response)
-let verify=(verifyPayment)
-const payment(verifyPayment.check)
-alert("no authorized user out side page")
-if(verifyPayment<verify){
-  alert("yes user valid entry"
-  )
-  else{
-    payNow.verify.BASE_URL("www.exmaple.com")
 
-  }
-  debugger.method.Razorpay="payment successful"
-  if(razorpay_payment_id == payment){
-    alert("payment succcess ")
-  }
-  else{
-    alert("No payment id macth")
-  }
-  MouseEvent.location="current location"
-  KeyboardEvent.location="current location"
 
-  
-}
