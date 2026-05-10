@@ -8,85 +8,163 @@ const fetch = require("node-fetch");
 
 const app = express();
 
+// 🔐 Middlewares
 app.use(cors());
 app.use(express.json());
 
-// 🔥 Razorpay
+// ✅ Razorpay Instance
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-// ✅ TEST
+// ✅ Test Route
 app.get("/", (req, res) => {
-  res.send("Server OK");
+  res.send("Server OK ✅");
 });
 
-// 🔥 CREATE ORDER
+// 🔥 Create Order
 app.post("/create-order", async (req, res) => {
+
   try {
+
     const order = await razorpay.orders.create({
-      amount: 100, // test amount
+
+      amount: 100, // ₹1199 in paise
+
       currency: "INR",
+
     });
 
     res.json(order);
+
   } catch (err) {
-    console.log(err);
-    res.status(500).send("Order Error");
+
+    console.log("CREATE ORDER ERROR:", err);
+
+    res.status(500).json({
+      success: false,
+      message: "Order creation failed"
+    });
+
   }
+
 });
 
-// 🔥 VERIFY PAYMENT (FIXED)
+// 🔥 Verify Payment
 app.post("/verify-payment", (req, res) => {
+
   try {
+
     const {
       razorpay_order_id,
       razorpay_payment_id,
-      razorpay_signature,
+      razorpay_signature
     } = req.body;
 
-    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
-      return res.status(400).json({ status: "failed" });
+    // ✅ Check missing fields
+    if (
+      !razorpay_order_id ||
+      !razorpay_payment_id ||
+      !razorpay_signature
+    ) {
+
+      return res.status(400).send("Payment Data Missing");
+
     }
 
-    const body = razorpay_order_id + "|" + razorpay_payment_id;
+    // ✅ Generate Signature
+    const body =
+      razorpay_order_id + "|" + razorpay_payment_id;
 
-    const expected = crypto
-      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-      .update(body)
+    const expectedSignature = crypto
+
+      .createHmac(
+        "sha256",
+        process.env.RAZORPAY_KEY_SECRET
+      )
+
+      .update(body.toString())
+
       .digest("hex");
 
-    if (expected === razorpay_signature) {
-      return res.json({ status: "success" });
+    // ✅ Compare
+    if (expectedSignature === razorpay_signature) {
+
+      res.send("Payment Verified");
+
     } else {
-      return res.status(400).json({ status: "failed" });
+
+      res.status(400).send("Invalid Payment");
+
     }
+
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ status: "error" });
+
+    console.log("VERIFY ERROR:", err);
+
+    res.status(500).send("Verification Failed");
+
   }
+
 });
 
-// 🔥 SAVE DATA
+// 🔥 Save Data To Google Sheet
 app.post("/save-data", async (req, res) => {
-  try {
-    fetch(process.env.GOOGLE_SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(req.body),
-    }).catch((err) => console.log(err));
 
-    res.json({ status: "saved" });
+  try {
+
+    // ✅ Google Apps Script URL
+    const GOOGLE_SCRIPT_URL =
+      process.env.GOOGLE_SCRIPT_URL;
+
+    if (!GOOGLE_SCRIPT_URL) {
+
+      return res.status(500).send("Google Script URL Missing");
+
+    }
+
+    // ✅ Send Data
+    const response = await fetch(
+
+      GOOGLE_SCRIPT_URL,
+
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(req.body),
+
+      }
+
+    );
+
+    const text = await response.text();
+
+    console.log("GOOGLE RESPONSE:", text);
+
+    res.send("Saved");
+
   } catch (err) {
-    console.log(err);
+
+    console.log("SAVE ERROR:", err);
+
     res.status(500).send("Save Error");
+
   }
+
 });
 
-// 🚀 START
+// 🚀 Start Server
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log("Server running on port " + PORT);
+
+  console.log(
+    `Server running on port ${PORT}`
+  );
+
 });
