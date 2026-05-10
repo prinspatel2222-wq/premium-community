@@ -174,11 +174,16 @@ function verifyPayment(response, name, phone, email, business) {
   .then(() => {
 
     // ✅ WhatsApp redirect
-    let message = `Hi ${name},
+    let message = `Hi ${name}, Payment successful 🎉
 
-Payment successful 🎉
+Join WhatsApp:
+https://chat.whatsapp.com/EJoQhmKLCD2KwsefSsZQeA
 
-Welcome to BGPN Community 🚀`;
+Join Telegram:
+https://t.me/+yOpxsenYUpw4NTA1 
+
+Note : Don’t panic. It may take some time for you to join.
+Even if you are unable to join using the link, we will add you from our side.`;
 
     window.location.href =
       `https://wa.me/91${phone}?text=${encodeURIComponent(message)}`;
