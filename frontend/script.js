@@ -1,4 +1,4 @@
-const BASE_URL ="http://srv1699181.hstgr.cloud:3000";
+const BASE_URL ="https://premium-community.onrender.com";
 
 // 🔒 Prevent multiple clicks
 let isProcessing = false;
