@@ -1,4 +1,4 @@
-const BASE_URL ="https://premium-community.onrender.com";
+const BASE_URL ="https://api.bgpncommunity.com";
 
 // 🔒 Prevent multiple clicks
 let isProcessing = false;
