@@ -174,16 +174,18 @@ function verifyPayment(response, name, phone, email, business) {
   .then(() => {
 
     // ✅ WhatsApp redirect
-    let message = `Hi ${name}, Payment successful 🎉
+    let message = `Hi ${name},✅ Payment Successfully Received 🙏
 
-Join WhatsApp:
-https://chat.whatsapp.com/EJoQhmKLCD2KwsefSsZQeA
+Thank you for joining Business Growth Premium Networking (BGPN)🚀
+Your registration has been successfully completed.
 
-Join Telegram:
-https://t.me/+yOpxsenYUpw4NTA1 
+⏳ Our team will add you to the WhatsApp & Telegram groups shortly.
+Please don’t panic if it takes a little time — due to high member requests, the joining process may sometimes take a few hours.
 
-Note : Don’t panic. It may take some time for you to join.
-Even if you are unable to join using the link, we will add you from our side.`;
+📲 You will receive all group access details soon.
+
+🤝 Welcome to India’s Premium Business Community
+We’re excited to help grow your business and network 🚀`;
 
     window.location.href =
       `https://wa.me/91${phone}?text=${encodeURIComponent(message)}`;
